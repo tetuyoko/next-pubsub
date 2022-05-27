@@ -5,6 +5,7 @@ import styles from "../styles/Home.module.css";
 
 import { AddFriendForm } from "../components/AddFriendForm";
 import { FriendList } from "../components/FriendList";
+import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
 
 const FriendsPage: NextPage = () => {
   return (
@@ -19,6 +20,7 @@ const FriendsPage: NextPage = () => {
         <AddFriendForm defaultAge={21} />
         <h2>Friend List</h2>
         <FriendList />
+        <ResetDatabaseButton />
       </main>
     </div>
   );
