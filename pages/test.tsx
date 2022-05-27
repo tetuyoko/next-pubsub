@@ -34,7 +34,7 @@ const TestPage: NextPage = (props:Props) => {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const res = await fetch('http://localhost:3000/api/foobar')
+  const res = await fetch(`${process.env.APP_URI}/api/foobar`)
   const data = await res.json()
   const props: Props = {
     email: data.email,
