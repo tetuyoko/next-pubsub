@@ -5,19 +5,19 @@ interface Props {
   defaultAge: number;
 }
 
-export function AddFriendForm({ defaultAge }: Props = { defaultAge: 21 }) {
+export function AddIntegrationForm({ defaultAge }: Props = { defaultAge: 21 }) {
   const [name, setName] = useState("");
   const [age, setAge] = useState(defaultAge);
   const [status, setStatus] = useState("");
 
-  async function addFriend() {
+  async function addIntegration() {
     try {
       const id = await db.friends.add({
         name,
         age,
       });
 
-      setStatus(`Friend ${name} successfully added. Got id ${id}`);
+      setStatus(`Integration ${name} successfully added. Got id ${id}`);
       setName("");
       setAge(defaultAge);
     } catch (error) {
@@ -40,7 +40,7 @@ export function AddFriendForm({ defaultAge }: Props = { defaultAge: 21 }) {
         value={age}
         onChange={(ev) => setAge(Number(ev.target.value))}
       />
-      <button onClick={addFriend}>Add</button>
+      <button onClick={addIntegration}>Add</button>
     </>
   );
 }
