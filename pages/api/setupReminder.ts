@@ -1,4 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import reminderQueue from "./queues/reminder";
 
@@ -15,6 +14,7 @@ export default async function handler(
   console.log(body);
   await reminderQueue.enqueue(email, {
     id: email,
+    delay: "8sec",
   });
   res.status(200).json({ body });
 }
