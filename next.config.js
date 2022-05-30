@@ -5,7 +5,6 @@ const {
   PHASE_PRODUCTION_BUILD,
 } = require('next/constants')
 
-
 module.exports = (phase) => {
   // when started in development mode `next dev` regardless of the value of STAGING environmental variable
   const isDev = phase === PHASE_DEVELOPMENT_SERVER
