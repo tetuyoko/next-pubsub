@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 
-import { AddIntegrationForm } from "../components/AddIntegrationForm";
+// import { AddIntegrationForm } from "../components/AddIntegrationForm";
 import { IntegrationList } from "../components/IntegrationList";
 import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
 
@@ -14,7 +14,9 @@ const FriendsPage: NextPage = () => {
       </Head>
       <main className={styles.main}>
         <h1>Integraion with 3rdPartySites by JobQueue</h1>
-        <AddIntegrationForm />
+        {
+          // <AddIntegrationForm />
+        }
         <IntegrationList />
         <ResetDatabaseButton />
 
@@ -26,7 +28,7 @@ const FriendsPage: NextPage = () => {
             const thirdparty_user_password = formData.get(
               "thirdparty_user_password"
             );
-            fetch("/api/setupReminder", {
+            fetch("/api/setupIntegration", {
               method: "POST",
               body: JSON.stringify({
                 thirdparty_user_id,
