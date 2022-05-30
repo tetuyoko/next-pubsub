@@ -1,12 +1,35 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
+import { useState } from "react";
 
 // import { AddIntegrationForm } from "../components/AddIntegrationForm";
 import { IntegrationList } from "../components/IntegrationList";
 import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
 
 const FriendsPage: NextPage = () => {
+  const [status, setStatus] = useState("");
+
+  async function registerIntegration(evt: any) {
+    evt.preventDefault();
+    const formData = new FormData(evt.target);
+    const thirdparty_user_id = formData.get("thirdparty_user_id");
+    const thirdparty_user_password = formData.get("thirdparty_user_password");
+    try {
+      // TODO: Init polling
+      fetch("/api/setupIntegration", {
+        method: "POST",
+        body: JSON.stringify({
+          thirdparty_user_id,
+          thirdparty_user_password,
+        }),
+      });
+      setStatus(`Integration ${thirdparty_user_id} registration started.`);
+    } catch (error) {
+      setStatus(`Failed to add ${thirdparty_user_id}: ${error}`);
+    }
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -17,26 +40,8 @@ const FriendsPage: NextPage = () => {
         {
           // <AddIntegrationForm />
         }
-        <IntegrationList />
-        <ResetDatabaseButton />
-
-        <form
-          onSubmit={(evt: any) => {
-            evt.preventDefault();
-            const formData = new FormData(evt.target);
-            const thirdparty_user_id = formData.get("thirdparty_user_id");
-            const thirdparty_user_password = formData.get(
-              "thirdparty_user_password"
-            );
-            fetch("/api/setupIntegration", {
-              method: "POST",
-              body: JSON.stringify({
-                thirdparty_user_id,
-                thirdparty_user_password,
-              }),
-            });
-          }}
-        >
+        <p>{status}</p>
+        <form onSubmit={(evt) => registerIntegration(evt)}>
           3rdPartyUserId:
           <input
             name="thirdparty_user_id"
@@ -52,6 +57,12 @@ const FriendsPage: NextPage = () => {
           <button type="submit">Submit</button>
         </form>
       </main>
+      <hr></hr>
+      <h3>Debug:</h3>
+      Integrations:
+      <IntegrationList />
+      <ResetDatabaseButton />
+      <hr></hr>
     </div>
   );
 };

@@ -17,13 +17,20 @@ export default async function handler(
   const thirdparty_user_id = body.thirdparty_user_id;
   const thirdparty_user_password = body.thirdparty_user_password;
   console.log(`I'll setup the reminder for ${thirdparty_user_id}.`);
-  await sleepSec(3);
-  console.log(`Done.`);
-
+  // TODO: Add Integration
+  //
   // TODO: Add Some Queue
+  //
   //await reminderQueue.enqueue(email, {
   //  id: email,
   //  delay: "8sec",
   //});
+  //
+  // Info: Belows are Subscriber dummy
+  // TODO: Rate balancing
+  // TODO: Update Integration
+  await sleepSec(3);
+  console.log(`Done.`);
+
   res.status(200).end();
 }
