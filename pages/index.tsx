@@ -75,13 +75,13 @@ const FriendsPage: NextPage = () => {
           />
           <button type="submit">Submit</button>
         </form>
+        <hr></hr>
+        <h3>Debug:</h3>
+        Integrations:
+        <IntegrationList />
+        <ResetDatabaseButton />
+        <hr></hr>
       </main>
-      <hr></hr>
-      <h3>Debug:</h3>
-      Integrations:
-      <IntegrationList />
-      <ResetDatabaseButton />
-      <hr></hr>
     </div>
   );
 };
