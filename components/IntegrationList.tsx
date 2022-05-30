@@ -7,8 +7,8 @@ export function IntegrationList() {
   return (
     <ul>
       {integrations?.map((i) => (
-        <li key={i.id}>
-          {i.user_id}, {i.thirdparty_user_id}, {i.thirdparty_user_password},
+        <li key={i.id} className={"row " + (i.enabled ? "done" : "")}>
+          {i.id}, {i.thirdparty_user_id}, {i.thirdparty_user_password},
           {i.enabled.toString()}
         </li>
       ))}

@@ -11,6 +11,10 @@ a {
   text-decoration: none;
 }
 
+.done {
+  background-color: #ccf;
+}
+
 * {
   box-sizing: border-box;
 }
