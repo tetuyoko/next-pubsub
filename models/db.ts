@@ -24,7 +24,7 @@ export class MySubClassedDexie extends Dexie {
 
   constructor() {
     super("myDatabase");
-    this.version(8).stores({
+    this.version(9).stores({
       integrations:
         "++id, user_id, thirdparty_user_id, thirdparty_user_password, enabled",
       monitors: "++id, user_id, parameter_json, status",

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import UUID from "uuidjs";
+
 import { db } from "../models/db";
 
 export function AddIntegrationForm() {
@@ -7,11 +9,13 @@ export function AddIntegrationForm() {
   const [status, setStatus] = useState("");
 
   async function addIntegration() {
+    const uuid = UUID.genV4().hexNoDelim;
+
     try {
       const id = await db.integrations.add({
         thirdparty_user_id,
         thirdparty_user_password,
-        user_id: "hogeog", // TODO: Use random string
+        user_id: uuid,
         enabled: false,
       });
 

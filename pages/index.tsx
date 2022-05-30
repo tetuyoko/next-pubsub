@@ -1,11 +1,19 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import { useState } from "react";
+
+import UUID from "uuidjs";
+
+import { db } from "../models/db";
+import styles from "../styles/Home.module.css";
 
 // import { AddIntegrationForm } from "../components/AddIntegrationForm";
 import { IntegrationList } from "../components/IntegrationList";
 import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
+
+const sleepSec = (second: number) => {
+  return new Promise((resolve) => setTimeout(resolve, second * 1000));
+};
 
 const FriendsPage: NextPage = () => {
   const [status, setStatus] = useState("");
@@ -13,18 +21,29 @@ const FriendsPage: NextPage = () => {
   async function registerIntegration(evt: any) {
     evt.preventDefault();
     const formData = new FormData(evt.target);
-    const thirdparty_user_id = formData.get("thirdparty_user_id");
-    const thirdparty_user_password = formData.get("thirdparty_user_password");
+    const thirdparty_user_id =
+      formData.get("thirdparty_user_id")?.toString() || "";
+    const thirdparty_user_password =
+      formData.get("thirdparty_user_password")?.toString() || "";
+    const uuid = UUID.genV4().hexNoDelim;
+
     try {
       // TODO: Init polling
-      fetch("/api/setupIntegration", {
-        method: "POST",
-        body: JSON.stringify({
-          thirdparty_user_id,
-          thirdparty_user_password,
-        }),
+
+      const id = await db.integrations.add({
+        thirdparty_user_id,
+        thirdparty_user_password,
+        user_id: uuid,
+        enabled: false,
       });
-      setStatus(`Integration ${thirdparty_user_id} registration started.`);
+      setStatus(`Integration ${id} registration started.`);
+      // INFO: queuing in real case
+      await sleepSec(3);
+      const updated = await db.integrations.update(id, { enabled: true });
+      if (updated) {
+        setStatus(`Integration ${id} updated.`);
+      }
+      // Update enabled: true
     } catch (error) {
       setStatus(`Failed to add ${thirdparty_user_id}: ${error}`);
     }

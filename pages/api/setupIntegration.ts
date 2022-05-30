@@ -1,5 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import { db } from "../../models/db";
 //import reminderQueue from "./queues/reminder";
+
+import UUID from "uuidjs";
 
 type Data = {
   body: any;
@@ -17,20 +20,26 @@ export default async function handler(
   const thirdparty_user_id = body.thirdparty_user_id;
   const thirdparty_user_password = body.thirdparty_user_password;
   console.log(`I'll setup the reminder for ${thirdparty_user_id}.`);
-  // TODO: Add Integration
-  //
-  // TODO: Add Some Queue
-  //
-  //await reminderQueue.enqueue(email, {
-  //  id: email,
-  //  delay: "8sec",
-  //});
-  //
-  // Info: Belows are Subscriber dummy
+
+  try {
+    const uuid = UUID.genV4().hexNoDelim;
+    const id = await db.integrations.add({
+      thirdparty_user_id,
+      thirdparty_user_password,
+      user_id: uuid, // TODO: Use random string
+      enabled: false,
+    });
+    console.log(`successfully added ${id}.`);
+  } catch (error) {
+    console.log(error);
+  }
+
+  // Info: Belows are Subscriber dummy. needs enqueu
   // TODO: Rate balancing
-  // TODO: Update Integration
+
   await sleepSec(3);
-  console.log(`Done.`);
+
+  // TODO: Update Integration
 
   res.status(200).end();
 }
