@@ -22,11 +22,31 @@ const FriendsPage: NextPage = () => {
           onSubmit={(evt: any) => {
             evt.preventDefault();
             const formData = new FormData(evt.target);
-            const email = formData.get("email");
-            fetch("/api/setupReminder", { method: "POST", body: email });
+            const thirdparty_user_id = formData.get("thirdparty_user_id");
+            const thirdparty_user_password = formData.get(
+              "thirdparty_user_password"
+            );
+            fetch("/api/setupReminder", {
+              method: "POST",
+              body: JSON.stringify({
+                thirdparty_user_id,
+                thirdparty_user_password,
+              }),
+            });
           }}
         >
-          <input name="email" type="email" placeholder="E-Mail" />
+          3rdPartyUserId:
+          <input
+            name="thirdparty_user_id"
+            type="text"
+            placeholder="thirdparty_user_id"
+          />
+          3rdPartyUserPassword:
+          <input
+            name="thirdparty_user_password"
+            type="text"
+            placeholder="thirdparty_password"
+          />
           <button type="submit">Submit</button>
         </form>
       </main>

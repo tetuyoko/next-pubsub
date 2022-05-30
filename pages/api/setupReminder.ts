@@ -2,19 +2,18 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import reminderQueue from "./queues/reminder";
 
 type Data = {
-  body: string;
+  body: any;
 };
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const email = req.body;
-  const body = `I'll setup the reminder for ${email}.`;
-  console.log(body);
+  //console.log(JSON.parse(req.body).thirdparty_user_id);
+  //console.log(JSON.parse(req.body).thirdparty_user_password);
   await reminderQueue.enqueue(email, {
     id: email,
     delay: "8sec",
   });
-  res.status(200).json({ body });
+  res.status(200);
 }
