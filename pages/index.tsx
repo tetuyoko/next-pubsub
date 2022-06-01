@@ -64,18 +64,18 @@ const FriendsPage: NextPage = () => {
         <title>Test Page</title>
       </Head>
       <main className={styles.main}>
-        <h1>Integraion with 3rdPartySites by JobQueue</h1>
+        <h1>Aync form simulator</h1>
         {
           // <AddIntegrationForm />
         }
         <form onSubmit={(evt) => registerIntegration(evt)}>
-          3rdPartyUserId:
+          UserId:
           <input
             name="thirdparty_user_id"
             type="text"
             placeholder="thirdparty_user_id"
           />
-          3rdPartyUserPassword:
+          Password:
           <input
             name="thirdparty_user_password"
             type="text"
