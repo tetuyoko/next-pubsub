@@ -10,6 +10,7 @@ import styles from "../styles/Home.module.css";
 // import { AddIntegrationForm } from "../components/AddIntegrationForm";
 import { IntegrationList } from "../components/IntegrationList";
 import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
+import { IndexableType } from "dexie";
 
 const sleepSec = (second: number) => {
   return new Promise((resolve) => setTimeout(resolve, second * 1000));
@@ -17,6 +18,20 @@ const sleepSec = (second: number) => {
 
 const FriendsPage: NextPage = () => {
   const [status, setStatus] = useState("");
+  const [pollingStatus, setPollingStatus] = useState("");
+
+  async function pollingProcess(id: IndexableType) {
+    setPollingStatus(`Polling started.`);
+    await sleepSec(3);
+    // INFO: queuing in real case
+    const updated = await db.integrations.update(id, { enabled: true });
+    if (updated) {
+      setStatus(`Integration ${id} updated.`);
+    }
+    await sleepSec(2);
+    // TODO: loope until enabled=true
+    setPollingStatus(`Polling ended.`);
+  }
 
   async function registerIntegration(evt: any) {
     evt.preventDefault();
@@ -28,8 +43,6 @@ const FriendsPage: NextPage = () => {
     const uuid = UUID.genV4().hexNoDelim;
 
     try {
-      // TODO: Init polling
-
       const id = await db.integrations.add({
         thirdparty_user_id,
         thirdparty_user_password,
@@ -37,13 +50,7 @@ const FriendsPage: NextPage = () => {
         enabled: false,
       });
       setStatus(`Integration ${id} registration started.`);
-      // INFO: queuing in real case
-      await sleepSec(3);
-      const updated = await db.integrations.update(id, { enabled: true });
-      if (updated) {
-        setStatus(`Integration ${id} updated.`);
-      }
-      // Update enabled: true
+      pollingProcess(id);
     } catch (error) {
       setStatus(`Failed to add ${thirdparty_user_id}: ${error}`);
     }
@@ -59,6 +66,7 @@ const FriendsPage: NextPage = () => {
         {
           // <AddIntegrationForm />
         }
+        <p>{pollingStatus}</p>
         <p>{status}</p>
         <form onSubmit={(evt) => registerIntegration(evt)}>
           3rdPartyUserId:
