@@ -1,26 +1,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
-
 import UUID from "uuidjs";
-
 import { db } from "../models/db";
 import styles from "../styles/Home.module.css";
-
 // import { AddIntegrationForm } from "../components/AddIntegrationForm";
 import { IntegrationList } from "../components/IntegrationList";
 import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
 import { IndexableType } from "dexie";
-
-const sleepSec = (second: number) => {
-  return new Promise((resolve) => setTimeout(resolve, second * 1000));
-};
-
-const randNumber = () => {
-  const min = 5;
-  const max = 10;
-  return Math.floor(Math.random() * (max + 1 - min)) + min;
-};
+import sleepSec from "../lib/sleepSec";
+import randNumber from "../lib/randNumber";
 
 const FriendsPage: NextPage = () => {
   const [status, setStatus] = useState("");
@@ -38,7 +27,7 @@ const FriendsPage: NextPage = () => {
   async function pollingProcess(id: IndexableType) {
     setPollingStatus(`Polling ${id} started.`);
     updateTrafficCount();
-    await sleepSec(randNumber());
+    await sleepSec(randNumber(5, 10));
     // INFO: queuing in real case
     await db.integrations.update(id, { enabled: 1 });
     // TODO: loope until enabled=true
@@ -65,7 +54,7 @@ const FriendsPage: NextPage = () => {
       });
       pollingProcess(id);
     } catch (error) {
-      // Some error
+      // TODO: Handle error
     }
   }
 
