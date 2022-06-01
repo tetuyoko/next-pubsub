@@ -14,7 +14,8 @@ import { useState } from "react";
 import UUID from "uuidjs";
 import { db } from "../models/db";
 // import styles from "../styles/Home.module.css";
-// import { AddIntegrationForm } from "../components/AddIntegrationForm";
+import { TableView } from "../components/TableView";
+import { AddIntegrationForm } from "../components/AddIntegrationForm";
 import { IntegrationList } from "../components/IntegrationList";
 import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
 import { IndexableType } from "dexie";
@@ -71,53 +72,56 @@ const FriendsPage: NextPage = () => {
   // TODO: refs: https://chakra-ui.com/docs/components/form/form-control
   // TODO: use table https://chakra-ui.com/docs/components/data-display/table#table-container
   return (
-    <Flex
-      minH={"100vh"}
-      align={"center"}
-      justify={"center"}
-      bg={useColorModeValue("gray.50", "gray.800")}
-    >
-      <Head>
-        <title>Test Page</title>
-      </Head>
-      <Stack
-        spacing={4}
-        w={"full"}
-        maxW={"md"}
-        bg={useColorModeValue("white", "gray.700")}
-        rounded={"xl"}
-        boxShadow={"lg"}
-        p={6}
-        my={12}
+    <>
+      <Flex
+        minH={"10vh"}
+        align={"center"}
+        justify={"center"}
+        bg={useColorModeValue("gray.50", "gray.800")}
       >
-        <Heading lineHeight={1.1} fontSize={{ base: "2xl", md: "3xl" }}>
-          Async form simulator
-        </Heading>
-        <FormControl id="email" isRequired>
-          <FormLabel>3rd Party&apos;s UserId</FormLabel>
-          <Input
-            placeholder="your-email@example.com"
-            _placeholder={{ color: "gray.500" }}
-            type="email"
-          />
-        </FormControl>
-        <FormControl id="password" isRequired>
-          <FormLabel>3rd Party&apos;s Password</FormLabel>
-          <Input type="password" />
-        </FormControl>
-        <Stack spacing={6}>
-          <Button
-            bg={"blue.400"}
-            color={"white"}
-            _hover={{
-              bg: "blue.500",
-            }}
-          >
-            Submit
-          </Button>
+        <Head>
+          <title>Test Page</title>
+        </Head>
+        <Stack
+          spacing={4}
+          w={"full"}
+          maxW={"md"}
+          bg={useColorModeValue("white", "gray.700")}
+          rounded={"xl"}
+          boxShadow={"lg"}
+          p={6}
+          my={12}
+        >
+          <Heading lineHeight={1.1} fontSize={{ base: "2xl", md: "3xl" }}>
+            Async form simulator
+          </Heading>
+          <FormControl id="email" isRequired>
+            <FormLabel>3rd Party&apos;s UserId</FormLabel>
+            <Input
+              placeholder="your-email@example.com"
+              _placeholder={{ color: "gray.500" }}
+              type="email"
+            />
+          </FormControl>
+          <FormControl id="password" isRequired>
+            <FormLabel>3rd Party&apos;s Password</FormLabel>
+            <Input type="password" />
+          </FormControl>
+          <Stack spacing={6}>
+            <Button
+              bg={"blue.400"}
+              color={"white"}
+              _hover={{
+                bg: "blue.500",
+              }}
+            >
+              Submit
+            </Button>
+          </Stack>
         </Stack>
-      </Stack>
-    </Flex>
+      </Flex>
+      <TableView></TableView>
+    </>
   );
 
   //return (
