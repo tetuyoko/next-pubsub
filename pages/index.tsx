@@ -16,21 +16,23 @@ const sleepSec = (second: number) => {
   return new Promise((resolve) => setTimeout(resolve, second * 1000));
 };
 
+const randNumber = () => {
+  const min = 5;
+  const max = 10;
+  return Math.floor(Math.random() * (max + 1 - min)) + min;
+};
+
 const FriendsPage: NextPage = () => {
   const [status, setStatus] = useState("");
   const [pollingStatus, setPollingStatus] = useState("");
 
   async function pollingProcess(id: IndexableType) {
-    setPollingStatus(`Polling started.`);
-    await sleepSec(3);
+    setPollingStatus(`Polling ${id} started.`);
+    await sleepSec(randNumber());
     // INFO: queuing in real case
-    const updated = await db.integrations.update(id, { enabled: true });
-    if (updated) {
-      setStatus(`Integration ${id} updated.`);
-    }
-    await sleepSec(2);
+    await db.integrations.update(id, { enabled: true });
     // TODO: loope until enabled=true
-    setPollingStatus(`Polling ended.`);
+    setPollingStatus(`Polling ${id} ended.`);
   }
 
   async function registerIntegration(evt: any) {
@@ -49,10 +51,9 @@ const FriendsPage: NextPage = () => {
         user_id: uuid,
         enabled: false,
       });
-      setStatus(`Integration ${id} registration started.`);
       pollingProcess(id);
     } catch (error) {
-      setStatus(`Failed to add ${thirdparty_user_id}: ${error}`);
+      // Some error
     }
   }
 
@@ -66,8 +67,6 @@ const FriendsPage: NextPage = () => {
         {
           // <AddIntegrationForm />
         }
-        <p>{pollingStatus}</p>
-        <p>{status}</p>
         <form onSubmit={(evt) => registerIntegration(evt)}>
           3rdPartyUserId:
           <input
@@ -85,6 +84,8 @@ const FriendsPage: NextPage = () => {
         </form>
         <hr></hr>
         <h3>Debug:</h3>
+        <p>{pollingStatus}</p>
+        <p>{status}</p>
         Integrations:
         <IntegrationList />
         <ResetDatabaseButton />
