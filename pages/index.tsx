@@ -15,6 +15,7 @@ import UUID from "uuidjs";
 import { db } from "../models/db";
 // import styles from "../styles/Home.module.css";
 import { TableView } from "../components/TableView";
+import { Toast } from "../components/Toast";
 import { AddIntegrationForm } from "../components/AddIntegrationForm";
 import { IntegrationList } from "../components/IntegrationList";
 import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
@@ -120,6 +121,7 @@ const FriendsPage: NextPage = () => {
           </Stack>
         </Stack>
       </Flex>
+      <Toast></Toast>
       <TableView></TableView>
     </>
   );
