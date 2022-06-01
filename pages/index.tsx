@@ -1,9 +1,19 @@
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Stack,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import UUID from "uuidjs";
 import { db } from "../models/db";
-import styles from "../styles/Home.module.css";
+// import styles from "../styles/Home.module.css";
 // import { AddIntegrationForm } from "../components/AddIntegrationForm";
 import { IntegrationList } from "../components/IntegrationList";
 import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
@@ -58,43 +68,95 @@ const FriendsPage: NextPage = () => {
     }
   }
 
+  // TODO: refs: https://chakra-ui.com/docs/components/form/form-control
+  // TODO: use table https://chakra-ui.com/docs/components/data-display/table#table-container
   return (
-    <div className={styles.container}>
+    <Flex
+      minH={"100vh"}
+      align={"center"}
+      justify={"center"}
+      bg={useColorModeValue("gray.50", "gray.800")}
+    >
       <Head>
         <title>Test Page</title>
       </Head>
-      <main className={styles.main}>
-        <h1>Aync form simulator</h1>
-        {
-          // <AddIntegrationForm />
-        }
-        <form onSubmit={(evt) => registerIntegration(evt)}>
-          UserId:
-          <input
-            name="thirdparty_user_id"
-            type="text"
-            placeholder="thirdparty_user_id"
+      <Stack
+        spacing={4}
+        w={"full"}
+        maxW={"md"}
+        bg={useColorModeValue("white", "gray.700")}
+        rounded={"xl"}
+        boxShadow={"lg"}
+        p={6}
+        my={12}
+      >
+        <Heading lineHeight={1.1} fontSize={{ base: "2xl", md: "3xl" }}>
+          Async form simulator
+        </Heading>
+        <FormControl id="email" isRequired>
+          <FormLabel>3rd Party&apos;s UserId</FormLabel>
+          <Input
+            placeholder="your-email@example.com"
+            _placeholder={{ color: "gray.500" }}
+            type="email"
           />
-          Password:
-          <input
-            name="thirdparty_user_password"
-            type="text"
-            placeholder="thirdparty_password"
-          />
-          <button type="submit">Submit</button>
-        </form>
-        <hr></hr>
-        <h3>Debug:</h3>
-        <p>main: {status}</p>
-        <p>polling: {pollingStatus}</p>
-        <p>traffic: {trafficStatus}</p>
-        Integrations:
-        <IntegrationList />
-        <ResetDatabaseButton />
-        <hr></hr>
-      </main>
-    </div>
+        </FormControl>
+        <FormControl id="password" isRequired>
+          <FormLabel>3rd Party&apos;s Password</FormLabel>
+          <Input type="password" />
+        </FormControl>
+        <Stack spacing={6}>
+          <Button
+            bg={"blue.400"}
+            color={"white"}
+            _hover={{
+              bg: "blue.500",
+            }}
+          >
+            Submit
+          </Button>
+        </Stack>
+      </Stack>
+    </Flex>
   );
+
+  //return (
+  //  <div className={styles.container}>
+  //    <Head>
+  //      <title>Test Page</title>
+  //    </Head>
+  //    <main className={styles.main}>
+  //      <h1>Aync form simulator</h1>
+  //      {
+  //        // <AddIntegrationForm />
+  //      }
+  //      <form onSubmit={(evt) => registerIntegration(evt)}>
+  //        UserId:
+  //        <input
+  //          name="thirdparty_user_id"
+  //          type="text"
+  //          placeholder="thirdparty_user_id"
+  //        />
+  //        Password:
+  //        <input
+  //          name="thirdparty_user_password"
+  //          type="text"
+  //          placeholder="thirdparty_password"
+  //        />
+  //        <button type="submit">Submit</button>
+  //      </form>
+  //      <hr></hr>
+  //      <h3>Debug:</h3>
+  //      <p>main: {status}</p>
+  //      <p>polling: {pollingStatus}</p>
+  //      <p>traffic: {trafficStatus}</p>
+  //      Integrations:
+  //      <IntegrationList />
+  //      <ResetDatabaseButton />
+  //      <hr></hr>
+  //    </main>
+  //  </div>
+  //);
 };
 
 export default FriendsPage;
