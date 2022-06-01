@@ -8,7 +8,7 @@ export interface Integration {
   user_id: string;
   thirdparty_user_id: string;
   thirdparty_user_password: string;
-  enabled: boolean;
+  enabled: number;
 }
 
 export interface Monitor {

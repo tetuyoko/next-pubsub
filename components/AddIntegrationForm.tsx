@@ -16,7 +16,7 @@ export function AddIntegrationForm() {
         thirdparty_user_id,
         thirdparty_user_password,
         user_id: uuid,
-        enabled: false,
+        enabled: 0,
       });
 
       setStatus(
