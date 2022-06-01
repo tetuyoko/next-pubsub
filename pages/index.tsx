@@ -16,6 +16,7 @@ import { db } from "../models/db";
 // import styles from "../styles/Home.module.css";
 import { TableView } from "../components/TableView";
 import { Toast } from "../components/Toast";
+import { Statistics } from "../components/Statistics";
 import { AddIntegrationForm } from "../components/AddIntegrationForm";
 import { IntegrationList } from "../components/IntegrationList";
 import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
@@ -99,7 +100,7 @@ const FriendsPage: NextPage = () => {
           <FormControl id="email" isRequired>
             <FormLabel>3rd Party&apos;s UserId</FormLabel>
             <Input
-              placeholder="your-email@example.com"
+              placeholder="your-thirdparty-user-id"
               _placeholder={{ color: "gray.500" }}
               type="email"
             />
@@ -122,6 +123,7 @@ const FriendsPage: NextPage = () => {
         </Stack>
       </Flex>
       <Toast></Toast>
+      <Statistics></Statistics>
       <TableView></TableView>
     </>
   );

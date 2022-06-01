@@ -1,5 +1,6 @@
 import { Button, useToast } from "@chakra-ui/react";
 import sleepSec from "../lib/sleepSec";
+import randNumber from "../lib/randNumber";
 
 const id = "test-toast";
 
@@ -11,7 +12,7 @@ export function Toast() {
         toast({
           title: "Integration creating.",
           status: "loading",
-          duration: 3000,
+          duration: randNumber(1, 7) * 1000,
           position: "top",
           onCloseComplete: () => {
             toast({
