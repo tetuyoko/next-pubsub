@@ -11,6 +11,8 @@ import {
 import { ReactNode } from "react";
 import { BsPerson } from "react-icons/bs";
 import { TbStack3 } from "react-icons/tb";
+import { db } from "../models/db";
+import { useLiveQuery } from "dexie-react-hooks";
 
 interface StatsCardProps {
   title: string;
@@ -49,12 +51,16 @@ function StatsCard(props: StatsCardProps) {
 }
 
 export function Statistics() {
+  const trafficCount = useLiveQuery(() =>
+    db.integrations.where("enabled").equals(0).count()
+  );
+
   return (
     <Box maxW="7xl" mx={"auto"} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
         <StatsCard
           title={"Tasks waiting"}
-          stat={"89"}
+          stat={trafficCount?.toString()}
           icon={<TbStack3 size={"3em"} />}
         />
       </SimpleGrid>

@@ -1,11 +1,4 @@
-import {
-  Formik,
-  Form,
-  Field,
-  ErrorMessage,
-  FormikHandlers,
-  FormikHelpers,
-} from "formik";
+import { Formik, Form, Field, FormikHelpers } from "formik";
 import {
   Button,
   Flex,
@@ -25,47 +18,29 @@ import { db } from "../models/db";
 // import styles from "../styles/Home.module.css";
 import { TableView } from "../components/TableView";
 import { Statistics } from "../components/Statistics";
-import { AddIntegrationForm } from "../components/AddIntegrationForm";
-import { IntegrationList } from "../components/IntegrationList";
 import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
 import { IndexableType } from "dexie";
-import sleepSec from "../lib/sleepSec";
 import randNumber from "../lib/randNumber";
-import { identity } from "lodash";
+import sleepSec from "../lib/sleepSec";
 
 interface Values {
   thirdparty_user_id: string;
   thirdparty_user_password: string;
 }
 
-const FriendsPage: NextPage = () => {
+const TopPage: NextPage = () => {
   const [status, setStatus] = useState("");
   const [pollingStatus, setPollingStatus] = useState("");
   const [trafficStatus, setTrafficStatus] = useState("");
   const toast = useToast();
 
-  async function updateTrafficCount() {
-    const trafficCount = await db.integrations
-      .where("enabled")
-      .equals(0)
-      .count();
-    setTrafficStatus(`Waiting ${trafficCount} tasks.`);
-  }
-
   async function pollingProcess(id: IndexableType) {
-    setPollingStatus(`Polling ${id} started.`);
-    updateTrafficCount();
-    // await sleepSec(randNumber(5, 10));
-    await sleepSec(3);
+    await sleepSec(randNumber(5, 10));
     // INFO: queuing in real case
     await db.integrations.update(id, { enabled: 1 });
-    // TODO: loope until enabled=true
-    setPollingStatus(`Polling ${id} ended.`);
-    // TODO: separate
-    updateTrafficCount();
   }
 
-  async function registerIntegration(values: Values) {
+  async function registerIntegration(values: Values, setSubmitting: Function) {
     const thirdparty_user_id = values.thirdparty_user_id;
     const thirdparty_user_password = values.thirdparty_user_password;
     const uuid = UUID.genV4().hexNoDelim;
@@ -78,6 +53,13 @@ const FriendsPage: NextPage = () => {
         enabled: 0,
       });
       await pollingProcess(id);
+      setSubmitting(false);
+      toast({
+        title: "Integration created.",
+        status: "success",
+        duration: 3000,
+        position: "top",
+      });
     } catch (error) {
       // TODO: Handle error
     }
@@ -103,16 +85,15 @@ const FriendsPage: NextPage = () => {
             values: Values,
             { setSubmitting }: FormikHelpers<Values>
           ) => {
-            registerIntegration(values);
-            setTimeout(() => {
-              toast({
-                title: "Integration created.",
-                status: "success",
-                duration: 3000,
-                position: "top",
-              });
-              setSubmitting(false);
-            }, 5000);
+            // TODO: comment out for test multiple run
+            setSubmitting(false);
+            toast({
+              title: "Integration started.",
+              status: "loading",
+              duration: 3000,
+              position: "top",
+            });
+            registerIntegration(values, setSubmitting);
           }}
         >
           {(props) => (
@@ -169,47 +150,10 @@ const FriendsPage: NextPage = () => {
         </Formik>
       </Flex>
       <Statistics></Statistics>
+      <ResetDatabaseButton />
       <TableView></TableView>
     </>
   );
-
-  //return (
-  //  <div className={styles.container}>
-  //    <Head>
-  //      <title>Test Page</title>
-  //    </Head>
-  //    <main className={styles.main}>
-  //      <h1>Aync form simulator</h1>
-  //      {
-  //        // <AddIntegrationForm />
-  //      }
-  //      <form onSubmit={(evt) => registerIntegration(evt)}>
-  //        UserId:
-  //        <input
-  //          name="thirdparty_user_id"
-  //          type="text"
-  //          placeholder="thirdparty_user_id"
-  //        />
-  //        Password:
-  //        <input
-  //          name="thirdparty_user_password"
-  //          type="text"
-  //          placeholder="thirdparty_password"
-  //        />
-  //        <button type="submit">Submit</button>
-  //      </form>
-  //      <hr></hr>
-  //      <h3>Debug:</h3>
-  //      <p>main: {status}</p>
-  //      <p>polling: {pollingStatus}</p>
-  //      <p>traffic: {trafficStatus}</p>
-  //      Integrations:
-  //      <IntegrationList />
-  //      <ResetDatabaseButton />
-  //      <hr></hr>
-  //    </main>
-  //  </div>
-  //);
 };
 
-export default FriendsPage;
+export default TopPage;
