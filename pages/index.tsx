@@ -112,7 +112,7 @@ const TopPage: NextPage = () => {
                 </Heading>
 
                 <Field name="thirdparty_user_id">
-                  {({ field, form }) => (
+                  {({ field, form }: { field: any; form: any }) => (
                     <FormControl isRequired>
                       <FormLabel>3rd Party&apos;s UserId</FormLabel>
                       <Input
@@ -124,7 +124,7 @@ const TopPage: NextPage = () => {
                   )}
                 </Field>
                 <Field name="thirdparty_user_password">
-                  {({ field, form }) => (
+                  {({ field, form }: { field: any; form: any }) => (
                     <FormControl isRequired>
                       <FormLabel>3rd Party&apos;s Password</FormLabel>
                       <Input {...field} type="password" />

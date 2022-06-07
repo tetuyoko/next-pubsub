@@ -51,16 +51,22 @@ function StatsCard(props: StatsCardProps) {
 }
 
 export function Statistics() {
+  let stats = "0";
   const trafficCount = useLiveQuery(() =>
     db.integrations.where("enabled").equals(0).count()
   );
+  if (trafficCount) {
+    stats = trafficCount.toString();
+  } else {
+    stats = "0";
+  }
 
   return (
     <Box maxW="7xl" mx={"auto"} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
         <StatsCard
           title={"Tasks waiting"}
-          stat={trafficCount?.toString()}
+          stat={stats}
           icon={<TbStack3 size={"3em"} />}
         />
       </SimpleGrid>
