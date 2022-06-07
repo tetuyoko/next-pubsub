@@ -15,6 +15,7 @@ import {
   Input,
   Stack,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -23,7 +24,6 @@ import UUID from "uuidjs";
 import { db } from "../models/db";
 // import styles from "../styles/Home.module.css";
 import { TableView } from "../components/TableView";
-import { Toast } from "../components/Toast";
 import { Statistics } from "../components/Statistics";
 import { AddIntegrationForm } from "../components/AddIntegrationForm";
 import { IntegrationList } from "../components/IntegrationList";
@@ -41,6 +41,7 @@ const FriendsPage: NextPage = () => {
   const [status, setStatus] = useState("");
   const [pollingStatus, setPollingStatus] = useState("");
   const [trafficStatus, setTrafficStatus] = useState("");
+  const toast = useToast();
 
   async function updateTrafficCount() {
     const trafficCount = await db.integrations
@@ -84,8 +85,6 @@ const FriendsPage: NextPage = () => {
     }
   }
 
-  // TODO: refs: https://chakra-ui.com/docs/components/form/form-control
-  // TODO: use table https://chakra-ui.com/docs/components/data-display/table#table-container
   return (
     <>
       <Flex
@@ -107,7 +106,21 @@ const FriendsPage: NextPage = () => {
             { setSubmitting }: FormikHelpers<Values>
           ) => {
             setTimeout(() => {
-              alert(JSON.stringify(values.thirdparty_user_id, null, 2));
+              toast({
+                title: "Integration creating.",
+                description: `user_id: ${values.thirdparty_user_id}`,
+                status: "loading",
+                duration: randNumber(1, 7) * 1000,
+                position: "top",
+                onCloseComplete: () => {
+                  toast({
+                    title: "Account created.",
+                    status: "success",
+                    duration: 3000,
+                    position: "top",
+                  });
+                },
+              });
               setSubmitting(false);
             }, 100);
           }}
@@ -165,7 +178,6 @@ const FriendsPage: NextPage = () => {
           )}
         </Formik>
       </Flex>
-      <Toast></Toast>
       <Statistics></Statistics>
       <TableView></TableView>
     </>
