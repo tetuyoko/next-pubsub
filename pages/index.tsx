@@ -1,4 +1,3 @@
-import { Formik, Form } from "formik";
 import {
   Button,
   Flex,
@@ -98,45 +97,29 @@ const FriendsPage: NextPage = () => {
           <Heading lineHeight={1.1} fontSize={{ base: "2xl", md: "3xl" }}>
             Async form simulator
           </Heading>
-          <Formik
-            initialValues={{}}
-            onSubmit={(values, actions) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                actions.setSubmitting(false);
-              }, 1000);
-            }}
-          >
-            {(props) => (
-              <Form>
-                <FormControl id="thirdparty_user_id" isRequired>
-                  <FormLabel>3rd Party&apos;s UserId</FormLabel>
-                  <Input
-                    placeholder="your-thirdparty-user-id"
-                    _placeholder={{ color: "gray.500" }}
-                    type="text"
-                  />
-                </FormControl>
-                <FormControl id="thirdparty_user_password" isRequired>
-                  <FormLabel>3rd Party&apos;s Password</FormLabel>
-                  <Input type="password" />
-                </FormControl>
-                <Stack spacing={6}>
-                  <Button
-                    type="submit"
-                    isLoading={props.isSubmitting}
-                    bg={"blue.400"}
-                    color={"white"}
-                    _hover={{
-                      bg: "blue.500",
-                    }}
-                  >
-                    Submit
-                  </Button>
-                </Stack>
-              </Form>
-            )}
-          </Formik>
+          <FormControl id="email" isRequired>
+            <FormLabel>3rd Party&apos;s UserId</FormLabel>
+            <Input
+              placeholder="your-thirdparty-user-id"
+              _placeholder={{ color: "gray.500" }}
+              type="email"
+            />
+          </FormControl>
+          <FormControl id="password" isRequired>
+            <FormLabel>3rd Party&apos;s Password</FormLabel>
+            <Input type="password" />
+          </FormControl>
+          <Stack spacing={6}>
+            <Button
+              bg={"blue.400"}
+              color={"white"}
+              _hover={{
+                bg: "blue.500",
+              }}
+            >
+              Submit
+            </Button>
+          </Stack>
         </Stack>
       </Flex>
       <Toast></Toast>
