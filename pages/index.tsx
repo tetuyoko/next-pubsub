@@ -15,7 +15,6 @@ import Head from "next/head";
 import { useState } from "react";
 import UUID from "uuidjs";
 import { db } from "../models/db";
-// import styles from "../styles/Home.module.css";
 import { TableView } from "../components/TableView";
 import { Statistics } from "../components/Statistics";
 import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
