@@ -9,7 +9,6 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import { BsPerson } from "react-icons/bs";
 import { TbStack3 } from "react-icons/tb";
 import { db } from "../models/db";
 import { useLiveQuery } from "dexie-react-hooks";

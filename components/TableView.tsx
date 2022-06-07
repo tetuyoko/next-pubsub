@@ -13,7 +13,7 @@ import { db } from "../models/db";
 import { useLiveQuery } from "dexie-react-hooks";
 
 export function TableView() {
-  const integrations = useLiveQuery(() => db.integrations.toArray());
+  const integrations = useLiveQuery(() => db.integrations.reverse().toArray());
   return (
     <TableContainer>
       <Table variant="simple">
