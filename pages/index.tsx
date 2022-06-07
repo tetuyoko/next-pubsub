@@ -1,4 +1,12 @@
 import {
+  Formik,
+  Form,
+  Field,
+  ErrorMessage,
+  FormikHandlers,
+  FormikHelpers,
+} from "formik";
+import {
   Button,
   Flex,
   FormControl,
@@ -23,6 +31,11 @@ import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
 import { IndexableType } from "dexie";
 import sleepSec from "../lib/sleepSec";
 import randNumber from "../lib/randNumber";
+
+interface Values {
+  thirdparty_user_id: string;
+  thirdparty_user_password: string;
+}
 
 const FriendsPage: NextPage = () => {
   const [status, setStatus] = useState("");
@@ -84,43 +97,73 @@ const FriendsPage: NextPage = () => {
         <Head>
           <title>Test Page</title>
         </Head>
-        <Stack
-          spacing={4}
-          w={"full"}
-          maxW={"md"}
-          bg={useColorModeValue("white", "gray.700")}
-          rounded={"xl"}
-          boxShadow={"lg"}
-          p={6}
-          my={12}
+        <Formik
+          initialValues={{
+            thirdparty_user_id: "",
+            thirdparty_user_password: "",
+          }}
+          onSubmit={(
+            values: Values,
+            { setSubmitting }: FormikHelpers<Values>
+          ) => {
+            setTimeout(() => {
+              alert(JSON.stringify(values.thirdparty_user_id, null, 2));
+              setSubmitting(false);
+            }, 100);
+          }}
         >
-          <Heading lineHeight={1.1} fontSize={{ base: "2xl", md: "3xl" }}>
-            Async form simulator
-          </Heading>
-          <FormControl id="email" isRequired>
-            <FormLabel>3rd Party&apos;s UserId</FormLabel>
-            <Input
-              placeholder="your-thirdparty-user-id"
-              _placeholder={{ color: "gray.500" }}
-              type="email"
-            />
-          </FormControl>
-          <FormControl id="password" isRequired>
-            <FormLabel>3rd Party&apos;s Password</FormLabel>
-            <Input type="password" />
-          </FormControl>
-          <Stack spacing={6}>
-            <Button
-              bg={"blue.400"}
-              color={"white"}
-              _hover={{
-                bg: "blue.500",
-              }}
-            >
-              Submit
-            </Button>
-          </Stack>
-        </Stack>
+          {(props) => (
+            <Form>
+              <Stack
+                spacing={4}
+                w={"full"}
+                maxW={"md"}
+                rounded={"xl"}
+                boxShadow={"lg"}
+                p={6}
+                my={12}
+              >
+                <Heading lineHeight={1.1} fontSize={{ base: "2xl", md: "3xl" }}>
+                  Async form simulator
+                </Heading>
+
+                <Field name="thirdparty_user_id">
+                  {({ field, form }) => (
+                    <FormControl isRequired>
+                      <FormLabel>3rd Party&apos;s UserId</FormLabel>
+                      <Input
+                        {...field}
+                        placeholder="your-thirdparty-user-id"
+                        type="text"
+                      />
+                    </FormControl>
+                  )}
+                </Field>
+                <Field name="thirdparty_user_password">
+                  {({ field, form }) => (
+                    <FormControl isRequired>
+                      <FormLabel>3rd Party&apos;s Password</FormLabel>
+                      <Input {...field} type="password" />
+                    </FormControl>
+                  )}
+                </Field>
+                <Stack spacing={6}>
+                  <Button
+                    type="submit"
+                    isLoading={props.isSubmitting}
+                    bg={"blue.400"}
+                    color={"white"}
+                    _hover={{
+                      bg: "blue.500",
+                    }}
+                  >
+                    Submit
+                  </Button>
+                </Stack>
+              </Stack>
+            </Form>
+          )}
+        </Formik>
       </Flex>
       <Toast></Toast>
       <Statistics></Statistics>
