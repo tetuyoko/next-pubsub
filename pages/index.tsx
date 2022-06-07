@@ -31,6 +31,7 @@ import { ResetDatabaseButton } from "../components/ResetDatabaseButton";
 import { IndexableType } from "dexie";
 import sleepSec from "../lib/sleepSec";
 import randNumber from "../lib/randNumber";
+import { identity } from "lodash";
 
 interface Values {
   thirdparty_user_id: string;
@@ -54,7 +55,8 @@ const FriendsPage: NextPage = () => {
   async function pollingProcess(id: IndexableType) {
     setPollingStatus(`Polling ${id} started.`);
     updateTrafficCount();
-    await sleepSec(randNumber(5, 10));
+    // await sleepSec(randNumber(5, 10));
+    await sleepSec(3);
     // INFO: queuing in real case
     await db.integrations.update(id, { enabled: 1 });
     // TODO: loope until enabled=true
@@ -63,13 +65,9 @@ const FriendsPage: NextPage = () => {
     updateTrafficCount();
   }
 
-  async function registerIntegration(evt: any) {
-    evt.preventDefault();
-    const formData = new FormData(evt.target);
-    const thirdparty_user_id =
-      formData.get("thirdparty_user_id")?.toString() || "";
-    const thirdparty_user_password =
-      formData.get("thirdparty_user_password")?.toString() || "";
+  async function registerIntegration(values: Values) {
+    const thirdparty_user_id = values.thirdparty_user_id;
+    const thirdparty_user_password = values.thirdparty_user_password;
     const uuid = UUID.genV4().hexNoDelim;
 
     try {
@@ -79,7 +77,7 @@ const FriendsPage: NextPage = () => {
         user_id: uuid,
         enabled: 0,
       });
-      pollingProcess(id);
+      await pollingProcess(id);
     } catch (error) {
       // TODO: Handle error
     }
@@ -105,24 +103,16 @@ const FriendsPage: NextPage = () => {
             values: Values,
             { setSubmitting }: FormikHelpers<Values>
           ) => {
+            registerIntegration(values);
             setTimeout(() => {
               toast({
-                title: "Integration creating.",
-                description: `user_id: ${values.thirdparty_user_id}`,
-                status: "loading",
-                duration: randNumber(1, 7) * 1000,
+                title: "Integration created.",
+                status: "success",
+                duration: 3000,
                 position: "top",
-                onCloseComplete: () => {
-                  toast({
-                    title: "Account created.",
-                    status: "success",
-                    duration: 3000,
-                    position: "top",
-                  });
-                },
               });
               setSubmitting(false);
-            }, 100);
+            }, 5000);
           }}
         >
           {(props) => (

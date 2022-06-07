@@ -9,8 +9,11 @@ import {
   TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
+import { db } from "../models/db";
+import { useLiveQuery } from "dexie-react-hooks";
 
 export function TableView() {
+  const integrations = useLiveQuery(() => db.integrations.toArray());
   return (
     <TableContainer>
       <Table variant="simple">
@@ -24,12 +27,14 @@ export function TableView() {
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>1</Td>
-            <Td>Peeabpoo</Td>
-            <Td>passsword</Td>
-            <Td>NotYet</Td>
-          </Tr>
+          {integrations?.map((i) => (
+            <Tr key={i.id} className={"row " + (i.enabled ? "done" : "")}>
+              <Td>{i.id}</Td>
+              <Td>{i.thirdparty_user_id}</Td>
+              <Td>{i.thirdparty_user_password}</Td>
+              <Td>{i.enabled.toString()}</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>
